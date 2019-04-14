@@ -58,6 +58,7 @@ import android.widget.ImageView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
+import com.nextcloud.client.appinfo.AppInfo;
 import com.nextcloud.client.di.Injectable;
 import com.nextcloud.client.preferences.AppPreferences;
 import com.nextcloud.client.preferences.AppPreferencesImpl;
@@ -212,7 +213,12 @@ public class FileDisplayActivity extends FileActivity
     private boolean searchOpen;
 
     private SearchView searchView;
-    @Inject AppPreferences preferences;
+
+    @Inject
+    protected AppPreferences preferences;
+
+    @Inject
+    protected AppInfo appInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -356,7 +362,7 @@ public class FileDisplayActivity extends FileActivity
             int lastSeenVersion = arbitraryDataProvider.getIntegerValue(account,
                                                                         AppPreferencesImpl.AUTO_PREF__LAST_SEEN_VERSION_CODE);
 
-            if (MainApp.getVersionCode() > lastSeenVersion) {
+            if (appInfo.getVersionCode() > lastSeenVersion) {
                 OwnCloudVersion serverVersion = AccountUtils.getServerVersionForAccount(account, this);
 
                 if (serverVersion == null) {
@@ -367,8 +373,11 @@ public class FileDisplayActivity extends FileActivity
                     DisplayUtils.showServerOutdatedSnackbar(this);
                 }
 
-                arbitraryDataProvider.storeOrUpdateKeyValue(account.name, AppPreferencesImpl.AUTO_PREF__LAST_SEEN_VERSION_CODE,
-                                                            String.valueOf(MainApp.getVersionCode()));
+                arbitraryDataProvider.storeOrUpdateKeyValue(
+                    account.name,
+                    AppPreferencesImpl.AUTO_PREF__LAST_SEEN_VERSION_CODE,
+                    appInfo.getFormattedVersionCode()
+                );
             }
         }
     }

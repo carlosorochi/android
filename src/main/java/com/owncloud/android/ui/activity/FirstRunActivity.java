@@ -40,6 +40,7 @@ import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.nextcloud.client.account.UserAccountManager;
+import com.nextcloud.client.appinfo.AppInfo;
 import com.nextcloud.client.di.Injectable;
 import com.nextcloud.client.preferences.AppPreferences;
 import com.owncloud.android.MainApp;
@@ -66,6 +67,7 @@ public class FirstRunActivity extends BaseActivity implements ViewPager.OnPageCh
 
     @Inject UserAccountManager userAccountManager;
     @Inject AppPreferences preferences;
+    @Inject AppInfo appInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,7 +178,7 @@ public class FirstRunActivity extends BaseActivity implements ViewPager.OnPageCh
     }
 
     private void onFinish() {
-        preferences.setLastSeenVersionCode(MainApp.getVersionCode());
+        preferences.setLastSeenVersionCode(appInfo.getVersionCode());
     }
 
     @Override

@@ -17,36 +17,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+package com.nextcloud.client.appinfo;
 
-package com.nextcloud.client.di;
+import android.content.Context;
 
-import android.app.Application;
+import dagger.Module;
+import dagger.Provides;
 
-import com.nextcloud.client.appinfo.AppInfoModule;
-import com.nextcloud.client.whatsnew.WhatsNewModule;
-import com.owncloud.android.MainApp;
-
-import javax.inject.Singleton;
-
-import dagger.BindsInstance;
-import dagger.Component;
-import dagger.android.support.AndroidSupportInjectionModule;
-
-@Component(modules = {
-    AndroidSupportInjectionModule.class,
-    AppModule.class,
-    AppInfoModule.class,
-    WhatsNewModule.class,
-})
-@Singleton
-public interface AppComponent {
-    void inject(MainApp app);
-
-    @Component.Builder
-    interface Builder {
-        @BindsInstance
-        Builder application(Application application);
-
-        AppComponent build();
+@Module
+public class AppInfoModule {
+    @Provides
+    AppInfo appInfo(Context context) {
+        return new AppInfoImpl(context);
     }
 }
